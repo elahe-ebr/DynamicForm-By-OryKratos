@@ -10,7 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-//        maven { url = uri("https://maven.pkg.dev/") }
+        maven {
+            url = uri("https://maven.google.com")
+        }
     }
 }
 
