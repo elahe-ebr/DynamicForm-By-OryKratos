@@ -14,9 +14,9 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(private val repo: RegistrationRepo) : ViewModel() {
 
-    private var _response =
+    private var _uiState =
         MutableStateFlow<ApiDataState<BaseResponseModel>>(ApiDataState.Loading)
-    val response: StateFlow<ApiDataState<BaseResponseModel>> = _response
+    val uiState: StateFlow<ApiDataState<BaseResponseModel>> = _uiState
 
     init {
         getRegistrationFlow()
@@ -25,7 +25,7 @@ class RegistrationViewModel @Inject constructor(private val repo: RegistrationRe
     private fun getRegistrationFlow() {
         viewModelScope.launch {
             repo.getRegistrationFlow().collect {
-                _response.value = it
+                _uiState.value = it
             }
         }
     }
