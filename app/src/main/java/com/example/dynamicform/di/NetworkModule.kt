@@ -1,6 +1,7 @@
 package com.example.dynamicform.di
 
 import com.example.dynamicform.BuildConfig
+import com.example.dynamicform.data.api.LoginApiService
 import com.example.dynamicform.data.api.RegistrationApiService
 import dagger.Module
 import dagger.Provides
@@ -45,8 +46,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): RegistrationApiService {
+    fun provideRegistrationApiService(retrofit: Retrofit): RegistrationApiService {
         return retrofit.create(RegistrationApiService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideLoginApiService(retrofit: Retrofit): LoginApiService {
+        return retrofit.create(LoginApiService::class.java)
     }
 }
 
