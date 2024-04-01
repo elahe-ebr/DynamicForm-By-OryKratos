@@ -1,6 +1,5 @@
 package com.example.dynamicform.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,17 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,15 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.dynamicform.R
 import com.example.dynamicform.data.model.Node
-import com.example.dynamicform.ui.ShowToast
+import com.example.dynamicform.ui.components.CustomOutlinedTextField
+import com.example.dynamicform.ui.components.ShowToast
 import com.example.dynamicform.ui.navigation.Screen
 import com.example.dynamicform.util.ApiDataState
 import com.example.dynamicform.viewModel.RegistrationViewModel
@@ -109,9 +98,9 @@ fun RegistrationForm(navController: NavHostController, nodes: List<Node>) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(nodes) { item ->
-                var text by remember { mutableStateOf("") }
+                val text by remember { mutableStateOf("") }
                 val type by remember { mutableStateOf(item.attributes.type) }
-                var showPassword by remember { mutableStateOf(item.attributes.type != "password") }
+                val showPassword by remember { mutableStateOf(item.attributes.type != "password") }
                 var checkedState by remember { mutableStateOf(true) }
 
                 if (type != "hidden" && type != "submit") {
@@ -125,47 +114,8 @@ fun RegistrationForm(navController: NavHostController, nodes: List<Node>) {
                             Text(text = item.meta.label.text)
                         }
                     } else
-                        OutlinedTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = text,
-                            label = { Text(text = item.meta.label.text) },
-                            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-                            leadingIcon = {
-                                if (item.attributes.required)
-                                    Icon(
-                                        imageVector = Icons.Default.Star,
-                                        contentDescription = "",
-                                        tint = Color.Red,
-                                        modifier = Modifier.size(18.dp)
-                                    )
-                            },
-                            trailingIcon = {
-                                if (item.attributes.type == "password")
-                                    Icon(
-                                        painter = if (showPassword) painterResource(R.drawable.ic_eye_off) else painterResource(
-                                            R.drawable.ic_eye_see
-                                        ),
-                                        contentDescription = "",
-                                        tint = Color.Gray,
-                                        modifier = Modifier
-                                            .size(20.dp)
-                                            .clickable {
-                                                showPassword = !showPassword
-                                            }
-                                    )
-                            },
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = when (item.attributes.type) {
-                                    "text" -> KeyboardType.Text
-                                    "number" -> KeyboardType.Number
-                                    "tel" -> KeyboardType.Phone
-                                    "email" -> KeyboardType.Email
-                                    else -> KeyboardType.Text
-                                }
-                            ),
-                            onValueChange = {
-                                text = it
-                            })
+                        CustomOutlinedTextField(item,text, showPassword )
+
                 }
             }
         }

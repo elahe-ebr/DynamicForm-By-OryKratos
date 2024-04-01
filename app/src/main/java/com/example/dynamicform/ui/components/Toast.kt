@@ -1,4 +1,4 @@
-package com.example.dynamicform.ui
+package com.example.dynamicform.ui.components
 
 import android.content.Context
 import android.widget.Toast
