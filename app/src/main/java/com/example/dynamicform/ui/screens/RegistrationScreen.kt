@@ -1,7 +1,6 @@
 package com.example.dynamicform.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,8 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -85,65 +82,61 @@ fun RegistrationForm(navController: NavHostController, nodes: List<Node>) {
 
     var clickedSignIn by remember { mutableStateOf(false) }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
             .fillMaxSize()
-            .padding(top = 50.dp, end = 20.dp, start = 20.dp, bottom = 20.dp)
+            .padding(top = 50.dp, end = 20.dp, start = 20.dp, bottom = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Sign up form",
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.titleLarge
-        )
-        LazyColumn(
-            modifier = Modifier.padding(top = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(nodes) { item ->
-                val text by remember { mutableStateOf("") }
-                val type by remember { mutableStateOf(item.attributes.type) }
-                val showPassword by remember { mutableStateOf(item.attributes.type != "password") }
-                var checkedState by remember { mutableStateOf(true) }
+        item() {
+            Text(
+                text = "Sign up form",
+                style = MaterialTheme.typography.titleLarge,
+            )
+        }
+        items(nodes) { item ->
+            val text by remember { mutableStateOf("") }
+            val type by remember { mutableStateOf(item.attributes.type) }
+            val showPassword by remember { mutableStateOf(item.attributes.type != "password") }
+            var checkedState by remember { mutableStateOf(true) }
 
-                if (type != "hidden" && type != "submit") {
-                    if (type == "checkbox") {
-                        Row(verticalAlignment = Alignment.CenterVertically)
-                        {
-                            Checkbox(
-                                checked = checkedState,
-                                onCheckedChange = { checkedState = it },
-                            )
-                            Text(text = item.meta.label.text)
-                        }
-                    } else
-                        CustomOutlinedTextField(item,text, showPassword )
+            if (type != "hidden" && type != "submit") {
+                if (type == "checkbox") {
+                    Row(verticalAlignment = Alignment.CenterVertically)
+                    {
+                        Checkbox(
+                            checked = checkedState,
+                            onCheckedChange = { checkedState = it },
+                        )
+                        Text(text = item.meta.label.text)
+                    }
+                } else
+                    CustomOutlinedTextField(item, text, showPassword)
 
-                }
             }
         }
-
-        Button(modifier = Modifier
-            .padding(top = 30.dp)
-            .fillMaxWidth()
-            .height(45.dp), onClick = { }) {
-            Text(text = "Sign up")
-        }
-        Text(
-            text = "Already a member?",
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 10.dp),
-            style = MaterialTheme.typography.labelSmall,
-            color = Color.Gray
-        )
-        TextButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = { clickedSignIn = true }) {
+        item {
+            Button(modifier = Modifier
+                .padding(top = 30.dp)
+                .fillMaxWidth()
+                .height(45.dp), onClick = { }) {
+                Text(text = "Sign up")
+            }
             Text(
-                text = "Sign in",
-                style = MaterialTheme.typography.bodyMedium
+                text = "Already a member?",
+                modifier = Modifier
+                    .padding(top = 10.dp),
+                style = MaterialTheme.typography.labelSmall,
+                color = Color.Gray
             )
+            TextButton(
+                onClick = { clickedSignIn = true }) {
+                Text(
+                    text = "Sign in",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
     }
 

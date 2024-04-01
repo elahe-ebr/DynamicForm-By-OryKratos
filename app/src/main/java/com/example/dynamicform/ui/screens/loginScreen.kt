@@ -2,15 +2,12 @@ package com.example.dynamicform.ui.screens
 
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -83,51 +80,48 @@ fun LoginForm(navController: NavHostController, nodes: List<Node>) {
 
     var clickedSignUp by remember { mutableStateOf(false) }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
             .fillMaxSize()
-            .padding(top = 50.dp, end = 20.dp, start = 20.dp, bottom = 20.dp)
+            .padding(top = 50.dp, end = 20.dp, start = 20.dp, bottom = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Sign in form",
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.titleLarge
-        )
-        LazyColumn(
-            modifier = Modifier.padding(top = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(nodes) { item ->
-                val text by remember { mutableStateOf("") }
-                val type by remember { mutableStateOf(item.attributes.type) }
-                val showPassword by remember { mutableStateOf(item.attributes.type != "password") }
-
-                if (type != "hidden" && type != "submit")
-                    CustomOutlinedTextField(item, text, showPassword)
-            }
-        }
-        Button(modifier = Modifier
-            .padding(top = 30.dp)
-            .fillMaxWidth()
-            .height(45.dp), onClick = { }) {
-            Text(text = "Sign in")
-        }
-        Text(
-            text = "Do you not have an account?",
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 10.dp),
-            style = MaterialTheme.typography.labelSmall,
-            color = Color.Gray
-        )
-        TextButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = { clickedSignUp = true }) {
+        item {
             Text(
-                text = "Sign up",
-                style = MaterialTheme.typography.bodyMedium
+                text = "Sign in form",
+                style = MaterialTheme.typography.titleLarge
             )
+        }
+        items(nodes) { item ->
+            val text by remember { mutableStateOf("") }
+            val type by remember { mutableStateOf(item.attributes.type) }
+            val showPassword by remember { mutableStateOf(item.attributes.type != "password") }
+
+            if (type != "hidden" && type != "submit")
+                CustomOutlinedTextField(item, text, showPassword)
+        }
+        item {
+            Button(modifier = Modifier
+                .padding(top = 30.dp)
+                .fillMaxWidth()
+                .height(45.dp), onClick = { }) {
+                Text(text = "Sign in")
+            }
+            Text(
+                text = "Do you not have an account?",
+                modifier = Modifier
+                    .padding(top = 10.dp),
+                style = MaterialTheme.typography.labelSmall,
+                color = Color.Gray
+            )
+            TextButton(
+                onClick = { clickedSignUp = true }) {
+                Text(
+                    text = "Sign up",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
     }
 
