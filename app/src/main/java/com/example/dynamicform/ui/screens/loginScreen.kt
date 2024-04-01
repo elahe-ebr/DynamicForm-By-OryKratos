@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -83,6 +85,7 @@ fun LoginForm(navController: NavHostController, nodes: List<Node>) {
 
     Column(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .padding(top = 50.dp, end = 20.dp, start = 20.dp, bottom = 20.dp)
     ) {
