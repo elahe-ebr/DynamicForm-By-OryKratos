@@ -17,6 +17,6 @@
 # Architecture
 * MVVM
 
-#Ui
-*Jetpack compose
-# ,ه
+# Ui
+* Jetpack compose
+
